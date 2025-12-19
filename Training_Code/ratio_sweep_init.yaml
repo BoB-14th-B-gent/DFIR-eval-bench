@@ -1,0 +1,47 @@
+project: hspace_agent_ratio_B-gent_Init_365
+name: hspace_agent_ratio_B-gent_Init_365
+method: bayes
+metric:
+  name: eval_loss
+  goal: minimize
+
+parameters:
+  lr:
+    distribution: log_uniform_values
+    min: 2e-6
+    max: 6e-6
+  batch_size:
+    values: [1]
+  grad_accum:
+    values: [1]
+  epochs:
+    values: [1, 2]
+  dropout:
+    values: [0.05, 0.1]
+  r:
+    values: [8, 16]
+  alpha:
+    values: [16, 32]
+  max_len:
+    values: [4000]
+
+command:
+  - /mnt/c/Users/user/Desktop/B-gent/env/peft/bin/python
+  - /mnt/c/Users/user/Desktop/B-gent/sLLM/agent_ratio_8_train_peft_continue_sweep.py
+  - --model_dir
+  - /mnt/c/Users/user/Desktop/B-gent/models/llama31-8b-instruct
+
+  - --train_data
+  - /mnt/c/Users/user/Desktop/B-gent/datasets/agent_split/train_fixed.jsonl
+  - --val_data
+  - /mnt/c/Users/user/Desktop/B-gent/datasets/agent_split/val_fixed.jsonl
+
+  - --out
+  - /mnt/c/Users/user/Desktop/B-gent/outputs
+  - --logging_steps
+  - "5"
+  - --project
+  - hspace_agent_ratio_B-gent_Init_365
+  - --group
+  - hspace_agent_ratio_B-gent_Init_365
+  - ${args}

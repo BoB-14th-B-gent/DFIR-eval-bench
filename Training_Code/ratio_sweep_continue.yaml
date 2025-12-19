@@ -1,0 +1,57 @@
+# Continue from adapter v1; search best hyperparams for new data
+name: ratio_B-gent_Sweep-5000+5000+100
+project: ratio_B-gent_Sweep-5000+5000+100
+entity: ssh09015-student
+method: bayes
+metric:
+  name: eval_loss
+  goal: minimize
+parameters:
+  lr:
+    distribution: log_uniform_values
+    min: 1e-5
+    max: 3e-5
+  batch_size:
+    values: [1,2]
+  grad_accum:
+    values: [4]
+  epochs:
+    values: [1, 2]
+  dropout:
+    values: [0.05, 0.1]
+  r:
+    values: [8, 16]
+  alpha:
+    values: [16, 32]
+  max_len:
+    values: [1024]
+
+command:
+  - /mnt/c/Users/user/Desktop/B-gent/env/peft/bin/python
+  - /mnt/c/Users/user/Desktop/B-gent/sLLM/ratio_8_train_peft_continue_sweep.py
+
+  - --model_dir
+  - /mnt/c/Users/user/Desktop/B-gent/models/llama31-8b-instruct
+
+  - --adapter
+  - /mnt/c/Users/user/Desktop/B-gent/outputs/2_5000_sweep-in4y7u7x
+
+  - --train_data
+  - /mnt/c/Users/user/Desktop/B-gent/datasets/multi_split/train.jsonl
+
+  - --val_data
+  - /mnt/c/Users/user/Desktop/B-gent/datasets/multi_split/val.jsonl
+
+  - --out
+  - /mnt/c/Users/user/Desktop/B-gent/outputs
+
+  - --logging_steps
+  - "5"
+
+  - --project
+  - ratio_B-gent_Sweep-5000+5000+100
+
+  - --group
+  - ratio_B-gent_Sweep-5000+5000+100
+
+  - ${args}
